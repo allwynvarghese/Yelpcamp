@@ -1,0 +1,13 @@
+<%- include("../partials/header") %>
+
+<h3><%=message%></h3>
+
+<h3>YelpCamp Login Page</h3>
+
+<form action="/login" method="POST">
+	<input type="text" placeholder="Username" name="username">
+	<input type="password" placeholder="Password" name="password">
+	<button>Login</button>
+</form>
+
+<%- include("../partials/footer") %>
