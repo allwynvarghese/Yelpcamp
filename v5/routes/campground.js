@@ -59,7 +59,7 @@ router.get("/camps/new", middleware.isLoggedIn, (req,res)=>{
 });
 
 //find the campground with given id and render that page
-router.get("/camps/:id", (req,res)=>{
+router.get("/camps/:id",(req,res)=>{
 	Campground.findById(req.params.id).populate("comments").exec((err, campDetails)=>{
 		
 		if(err){

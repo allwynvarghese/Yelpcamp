@@ -43,7 +43,7 @@ router.post("/camps/:id/comment", isLoggedIn, (req, res)=>{
 });
 
 //Edit Comments
-router.get("/camps/:id/comment/:comment_id/edit", (req, res)=>{
+router.get("/camps/:id/comment/:comment_id/edit", middleware.checkCommentAuth, (req, res)=>{
 	Campground.findById(req.params.id, (err, foundCamps)=>{
 		if(err){
 			console.log(err);
@@ -59,7 +59,7 @@ router.get("/camps/:id/comment/:comment_id/edit", (req, res)=>{
 
 //Add edited comments
 router.put("/camps/:id/comment/:comment_id", (req, res)=>{
-	Comments.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment)=>{
+	Comments.findByIdAndUpdate(req.params.comment_id, req.body.comment, middleware.checkCommentAuth, (err, updatedComment)=>{
 		if(err){
 			console.log(err);
 			res.redirect("back");
@@ -70,7 +70,7 @@ router.put("/camps/:id/comment/:comment_id", (req, res)=>{
 });
 
 //Destroy comments
-router.delete("/camps/:id/comment/:comment_id", (req,res)=>{
+router.delete("/camps/:id/comment/:comment_id", middleware.checkCommentAuth, (req,res)=>{
 	Comments.findByIdAndRemove(req.params.comment_id, (err)=>{
 		if(err){
 			console.log(err);
