@@ -44,7 +44,8 @@ middlewareObj.checkCommentAuth = function checkCommentAuth(req, res, next){
 		
 		//check if the logged in user is the user who has created the camps.
 		Comments.findById(req.params.comment_id, (err, foundComment)=>{
-			
+			console.log(foundComment.author.id);
+			//console.log(req.user._id);
 			if(err){
 		   		console.log(err);
 		   	}else if(foundComment.author.id.equals(req.user._id)){

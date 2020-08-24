@@ -97,7 +97,7 @@ router.put("/camps/:id", middleware.checkAuthorization, (req, res)=>{
 });
 
 //Destroy camps
-router.delete("/camps/:id", (req, res)=>{
+router.delete("/camps/:id", middleware.checkAuthorization, (req, res)=>{
 	Campground.findByIdAndRemove(req.params.id, (err)=>{
 		if(err){
 			console.log(err);

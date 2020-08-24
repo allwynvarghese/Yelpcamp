@@ -28,7 +28,7 @@ router.post("/camps/:id/comment", isLoggedIn, (req, res)=>{
 					console.log(err);
 				}else{
 					//add user to comments
-					comment.author._id = req.user._id;
+					comment.author.id = req.user._id;
 					comment.author.username = req.user.username;
 					//save the comments
 					comment.save();
