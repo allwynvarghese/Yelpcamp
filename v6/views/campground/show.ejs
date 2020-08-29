@@ -1,0 +1,60 @@
+<%- include("../partials/header") %>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3">
+			<div>
+				<p class="lead">YelpCamp</p>
+			</div>
+			<div class="list-group">
+				<li class="list-group-item active">Item Group 1</li>
+				<li class="list-group-item">Item Group 2</li>
+				<li class="list-group-item">Item Group 3</li>
+			</div>
+			
+		</div>
+	
+		<div class="col-md-9">
+			<div class="thumbnail">
+				<img src="<%=camp.image%>">
+				<div class="caption">
+					<h4 class="pull-right">€9.5/night</h4>
+					<a href="#"><h4> <%=camp.name%> </h4></a>
+					<p><%=camp.desc%></p>
+					<p>
+						<em>
+							Submitted By <strong> <%=camp.author.username%> </strong>
+						</em>
+					</p>
+						<% if(currentUser && camp.author.id.equals(currentUser._id)){ %>
+							<a class="btn btn-warning" href="/camps/<%=camp._id%>/edit">Edit</a>
+							<form style="display: inline" action="/camps/<%=camp._id%>?_method=DELETE" method="POST">
+								<button class="btn btn-danger" >Delete</button>
+							</form>
+						<% } %>
+				</div>
+			</div>
+			
+			<div class="well">
+				<h3 class="caption">Comments</h3>
+				<a class="btn btn-success pull-right" href="/camps/<%=camp._id%>/comment/new">Add New Comment</a>
+				<br><br>
+				<hr>
+				<%camp.comments.forEach(function(comment){%>
+					<p><strong><%=comment.author.username%></strong> - <%=comment.text%></p>
+					<% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+						<a class="btn btn-xs btn-warning" href="/camps/<%=camp._id%>/comment/<%=comment._id%>/edit">Edit</a>
+						<form action="/camps/<%=camp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST" style="display: inline">
+							<input type="submit" class="btn btn-xs btn-danger" value="Delete">
+						</form>
+					<% } %>
+				<%})%>
+			</div>
+			<a href="/camps">Back to Camps</a>
+		</div>
+		
+	</div>	
+
+</div>
+
+<%- include("../partials/footer") %>
