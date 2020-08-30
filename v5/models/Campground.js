@@ -7,14 +7,14 @@ var campgroundSchema = new mongoose.Schema({
 	desc: String,
 	author: {
 		id:{
-			type: mongoose.Schema.Types.ObjectId,
+			type: mongoose.Schema.Types.ObjectID,
 			ref: "User"
 		},
 		username: String
 	},
 	comments: [
 		{
-			type: mongoose.Schema.Types.ObjectId,
+			type: mongoose.Schema.Types.ObjectID,
 			ref: "Comment"
 		}
 	]

@@ -20,7 +20,7 @@ middlewareObj.checkAuthorization = function checkAuthorization(req, res, next){
 		//check if the logged in user is the user who has created the camps.
 		Campground.findById(req.params.id, (err, foundCamp)=>{
 			
-			if(err){
+			if(err || !foundCamp){
 		   		console.log(err);
 		   }else if(foundCamp.author.id.equals(req.user._id)){
 				next();
@@ -47,7 +47,7 @@ middlewareObj.checkCommentAuth = function checkCommentAuth(req, res, next){
 		Comments.findById(req.params.comment_id, (err, foundComment)=>{
 			console.log(foundComment.author.id);
 			//console.log(req.user._id);
-			if(err){
+			if(err || !foundComment){
 		   		console.log(err);
 		   	}else if(foundComment.author.id.equals(req.user._id)){
 				next();

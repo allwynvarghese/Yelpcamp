@@ -14,11 +14,13 @@ router.get("/register", (req, res)=>{
 router.post("/register", (req,res)=>{
 	var newUser = new Users({username: req.body.username})
 	Users.register(newUser, req.body.password, (err, user)=>{
-		if(err){
+		if(err || !user){
 			console.log(err);
+			req.flash("error", err.message);
 			return res.redirect("/register");
 		}
 		passport.authenticate("local")(req, res, ()=>{
+			req.flash("success", "Successfully Registered!");
 			res.redirect("/camps");
 		});
 	});

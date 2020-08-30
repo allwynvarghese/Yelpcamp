@@ -51,6 +51,7 @@ app.use(campRoutes);
 app.use(commentRoutes);
 
 exit(() => {
+	
     console.log('Exiting');
 });
 

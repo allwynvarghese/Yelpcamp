@@ -7,8 +7,10 @@ const middleware = require("../middleware");
 //NEW comment
 router.get("/camps/:id/comment/new", isLoggedIn, (req,res)=>{
 	Campground.findById(req.params.id, (err, campground)=>{
-		if(err){
+		if(err || !campground){
 			console.log(err);
+			req.flash("error", "Oops! We are unable to find this comment!!");
+			res.redirect("/camps");
 		}else{
 			res.render("comment/new", {camp: campground})
 		}
@@ -19,8 +21,10 @@ router.get("/camps/:id/comment/new", isLoggedIn, (req,res)=>{
 router.post("/camps/:id/comment", isLoggedIn, (req, res)=>{
 	//1. find campground by id
 	Campground.findById(req.params.id, (err, campground)=>{
-		if(err){
+		if(err || !campground){
 			console.log("err");
+			req.flash("error", "Oops! We are unable to find this comment!!");
+			res.redirect("back");
 		}else{
 			//2. Create the comment
 			Comments.create(req.body.comment, (err, comment)=>{
@@ -45,8 +49,9 @@ router.post("/camps/:id/comment", isLoggedIn, (req, res)=>{
 //Edit Comments
 router.get("/camps/:id/comment/:comment_id/edit", middleware.checkCommentAuth, (req, res)=>{
 	Campground.findById(req.params.id, (err, foundCamps)=>{
-		if(err){
+		if(err || !foundCamps){
 			console.log(err);
+			req.flash("error", "Oops! We are unable to find this comment!!");
 			res.redirect("back");
 		}else{
 			Comments.findById(req.params.comment_id, (err, foundComment)=>{
@@ -60,8 +65,11 @@ router.get("/camps/:id/comment/:comment_id/edit", middleware.checkCommentAuth, (
 //Add edited comments
 router.put("/camps/:id/comment/:comment_id", (req, res)=>{
 	Comments.findByIdAndUpdate(req.params.comment_id, req.body.comment, middleware.checkCommentAuth, (err, updatedComment)=>{
-		if(err){
+		if(err || !updatedComment){
 			console.log(err);
+			if(!updatedComment){
+				req.flash("error", "Oops! We are unable to find this comment!!");
+			}
 			res.redirect("back");
 		}else{
 			res.redirect("/camps/" + req.params.id);

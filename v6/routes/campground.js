@@ -62,8 +62,10 @@ router.get("/camps/new", middleware.isLoggedIn, (req,res)=>{
 router.get("/camps/:id",(req,res)=>{
 	Campground.findById(req.params.id).populate("comments").exec((err, campDetails)=>{
 		
-		if(err){
+		if(err || !campDetails){
 			console.log(err);
+			req.flash("error", "Oops! We are unable to find this camp!!");
+			res.redirect("/camps");
 		}else{
 			console.log(campDetails);
 			res.render("campground/show", {camp: campDetails});
@@ -76,9 +78,10 @@ router.get("/camps/:id",(req,res)=>{
 //Edit campground
 router.get("/camps/:id/edit", middleware.checkAuthorization, (req, res)=>{
 	Campground.findById(req.params.id, (err, foundCamp)=>{
-		if(err){
+		if(err || !foundCamp){
 			console.log(err);
-			res.redirect("/camps/:id")
+			req.flash("error", "Oops! We are unable to find this camp!!");
+			res.redirect("/camps");
 		}else{
 			res.render("campground/edit", {camp: foundCamp});
 		}
@@ -88,7 +91,7 @@ router.get("/camps/:id/edit", middleware.checkAuthorization, (req, res)=>{
 
 router.put("/camps/:id", middleware.checkAuthorization, (req, res)=>{
 	Campground.findByIdAndUpdate(req.params.id, req.body.camp, (err, updatedCamps)=>{
-		if(err){
+		if(err || !updatedCamps){
 			res.redirect("/camps");
 		}else{
 			res.redirect("/camps/" + req.params.id);

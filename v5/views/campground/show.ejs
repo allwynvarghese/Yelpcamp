@@ -26,12 +26,12 @@
 							Submitted By <strong> <%=camp.author.username%> </strong>
 						</em>
 					</p>
-					
-						<a class="btn btn-warning" href="/camps/<%=camp._id%>/edit">Edit</a>
-						<form style="display: inline" action="/camps/<%=camp._id%>?_method=DELETE" method="POST">
-							<button class="btn btn-danger" >Delete</button>
-						</form>
-					
+						<% if(currentUser && camp.author.id.equals(currentUser._id)){ %>
+							<a class="btn btn-warning" href="/camps/<%=camp._id%>/edit">Edit</a>
+							<form style="display: inline" action="/camps/<%=camp._id%>?_method=DELETE" method="POST">
+								<button class="btn btn-danger" >Delete</button>
+							</form>
+						<% } %>
 				</div>
 			</div>
 			
@@ -42,12 +42,12 @@
 				<hr>
 				<%camp.comments.forEach(function(comment){%>
 					<p><strong><%=comment.author.username%></strong> - <%=comment.text%></p>
-					
+					<% if(comment.author.id.equals(currentUser._id)){ %>
 						<a class="btn btn-xs btn-warning" href="/camps/<%=camp._id%>/comment/<%=comment._id%>/edit">Edit</a>
 						<form action="/camps/<%=camp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST" style="display: inline">
 							<input type="submit" class="btn btn-xs btn-danger" value="Delete">
 						</form>
-					
+					<% } %>
 				<%})%>
 			</div>
 			<a href="/camps">Back to Camps</a>
